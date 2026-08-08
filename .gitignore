@@ -1,0 +1,2 @@
+# wrangler 的本機快取：含 Cloudflare 帳號 ID 與帳號名稱（email），不要進 repo
+.wrangler/
