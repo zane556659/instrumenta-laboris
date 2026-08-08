@@ -69,15 +69,129 @@
   </div>
 
   <h2>五、案例卡</h2>
-  <div class="cards">
-    <img src="cards/01-cover.png" alt="封面：PDF 印章流程簡化工具" loading="lazy">
-    <img src="cards/02-needs.png" alt="使用者需求" loading="lazy">
-    <img src="cards/03-flow.png" alt="流程改變：四步縮成兩步" loading="lazy">
-    <img src="cards/04-verify.png" alt="解法與驗證" loading="lazy">
-    <img src="cards/05-next.png" alt="成果與下一步" loading="lazy">
+
+  <div class="carousel" id="cardDeck">
+    <div class="carousel-frame">
+      <button class="nav prev" type="button" aria-label="上一張">‹</button>
+
+      <div class="track" tabindex="0" role="group" aria-roledescription="輪播" aria-label="案例卡">
+        <!-- 輪播不用 lazy：翻到下一張才開始抓圖，會先閃一格空白 -->
+        <figure class="slide"><img src="cards/01-cover.png" alt="封面：PDF 印章流程簡化工具" decoding="async"></figure>
+        <figure class="slide"><img src="cards/02-needs.png" alt="使用者需求" decoding="async"></figure>
+        <figure class="slide"><img src="cards/03-flow.png" alt="流程改變：四步縮成兩步" decoding="async"></figure>
+        <figure class="slide"><img src="cards/04-verify.png" alt="解法與驗證" decoding="async"></figure>
+        <figure class="slide"><img src="cards/05-next.png" alt="成果與下一步" decoding="async"></figure>
+      </div>
+
+      <button class="nav next" type="button" aria-label="下一張">›</button>
+    </div>
+
+    <div class="carousel-foot">
+      <div class="dots" role="tablist" aria-label="選擇案例卡"></div>
+      <p class="counter" aria-live="polite"><span class="cur">1</span> / <span class="total">5</span></p>
+    </div>
   </div>
 
 </main>
+
+<script>
+(function () {
+  var deck = document.getElementById('cardDeck');
+  if (!deck) return;
+
+  var track  = deck.querySelector('.track');
+  var slides = Array.prototype.slice.call(deck.querySelectorAll('.slide'));
+  var prev   = deck.querySelector('.prev');
+  var next   = deck.querySelector('.next');
+  var dotBox = deck.querySelector('.dots');
+  var curEl  = deck.querySelector('.cur');
+  var index  = 0;
+
+  deck.querySelector('.total').textContent = slides.length;
+
+  // 沒有 JS 時是一排可捲動的卡，有 JS 才長出控制項
+  deck.classList.add('is-live');
+
+  var dots = slides.map(function (_, i) {
+    var d = document.createElement('button');
+    d.type = 'button';
+    d.className = 'dot';
+    d.setAttribute('role', 'tab');
+    d.setAttribute('aria-label', '第 ' + (i + 1) + ' 張');
+    d.addEventListener('click', function () { go(i); });
+    dotBox.appendChild(d);
+    return d;
+  });
+
+  // 不用 scrollTo({behavior:'smooth'})，也不用 CSS scroll-behavior——
+  // 兩者在部分環境會靜默不執行，結果是圓點換了、圖片沒動。
+  // 這裡每一格自己寫入 scrollLeft，動不動得了不看瀏覽器臉色。
+  var slide = null;
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function glide(to) {
+    if (slide) cancelAnimationFrame(slide);
+    var from = track.scrollLeft;
+    var dist = to - from;
+
+    // 動畫跑不動的情況一律直接就位：分頁在背景時 rAF 不發生，
+    // 若還等它跑完，圓點會換而圖片不動——寧可少一段滑順也不能不動
+    var cannotAnimate = reduce || document.hidden || !window.requestAnimationFrame;
+    if (cannotAnimate || Math.abs(dist) < 2) { track.scrollLeft = to; return; }
+
+    var t0 = performance.now();
+    var dur = 320;
+    (function step(now) {
+      var p = Math.min(1, (now - t0) / dur);
+      var e = p < .5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2; // easeInOutCubic
+      track.scrollLeft = from + dist * e;
+      if (p < 1) { slide = requestAnimationFrame(step); }
+      else { track.scrollLeft = to; }   // 收尾一定落在整數位置
+    })(t0);
+  }
+
+  function go(i) {
+    index = Math.max(0, Math.min(slides.length - 1, i));
+    glide(slides[index].offsetLeft - track.offsetLeft);
+    paint();
+  }
+
+  function paint() {
+    dots.forEach(function (d, i) {
+      d.classList.toggle('on', i === index);
+      d.setAttribute('aria-selected', i === index);
+    });
+    curEl.textContent = index + 1;
+    prev.disabled = index === 0;
+    next.disabled = index === slides.length - 1;
+  }
+
+  prev.addEventListener('click', function () { go(index - 1); });
+  next.addEventListener('click', function () { go(index + 1); });
+
+  track.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowLeft')  { e.preventDefault(); go(index - 1); }
+    if (e.key === 'ArrowRight') { e.preventDefault(); go(index + 1); }
+  });
+
+  // 手指滑動／觸控板由瀏覽器原生 scroll-snap 處理，這裡只負責把位置讀回來
+  var idle;
+  track.addEventListener('scroll', function () {
+    clearTimeout(idle);
+    idle = setTimeout(function () {
+      var mid = track.scrollLeft + track.clientWidth / 2;
+      var near = 0, best = Infinity;
+      slides.forEach(function (s, i) {
+        var c = s.offsetLeft - track.offsetLeft + s.clientWidth / 2;
+        if (Math.abs(c - mid) < best) { best = Math.abs(c - mid); near = i; }
+      });
+      if (near !== index) { index = near; paint(); }
+    }, 90);
+  }, { passive: true });
+
+  paint();
+})();
+</script>
 
 <footer class="site-foot">
   <div class="wrap">

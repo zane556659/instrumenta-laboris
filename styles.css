@@ -155,15 +155,108 @@ strong { font-weight: 800; }
 .flow-box ol { margin: 0; padding-left: 20px; font-size: 16px; }
 .flow-box li { margin: 0 0 8px; }
 
-.cards { margin: 30px 0 0; }
+/* ---------- 案例卡輪播 ---------- */
 
-.cards img {
+.carousel { margin: 30px 0 0; }
+
+.carousel-frame { position: relative; }
+
+.track {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  outline: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.track::-webkit-scrollbar { display: none; }
+
+.track:focus-visible { box-shadow: 0 0 0 3px rgba(226, 127, 46, .35); border-radius: 12px; }
+
+.slide {
+  flex: 0 0 100%;
+  margin: 0;
+  scroll-snap-align: center;
+}
+
+.slide img {
   display: block;
   width: 100%;
   height: auto;
-  margin: 0 0 20px;
   border: 1px solid var(--line);
   border-radius: 12px;
+}
+
+/* 沒有 JS 時退回「一排可左右捲的卡」，控制項不出現 */
+.nav, .carousel-foot { display: none; }
+
+.is-live .nav { display: flex; }
+.is-live .carousel-foot { display: flex; }
+
+.nav {
+  position: absolute;
+  top: 50%;
+  z-index: 2;
+  width: 46px;
+  height: 46px;
+  transform: translateY(-50%);
+  align-items: center;
+  justify-content: center;
+  padding: 0 0 4px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .94);
+  color: var(--orange);
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, .12);
+  transition: transform .15s ease, opacity .15s ease;
+}
+
+.nav:hover:not(:disabled) { transform: translateY(-50%) scale(1.08); }
+.nav:disabled { opacity: .28; cursor: default; }
+/* 箭頭壓在卡片邊緣內側，不要掛在框外——
+   框外在寬螢幕看得到，視窗一窄就被裁掉 */
+.nav.prev { left: 10px; }
+.nav.next { right: 10px; }
+
+.carousel-foot {
+  margin: 18px 0 0;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+}
+
+.dots { display: flex; gap: 9px; }
+
+.dot {
+  width: 9px;
+  height: 9px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(64, 68, 77, .22);
+  cursor: pointer;
+  transition: background .15s ease, transform .15s ease;
+}
+
+.dot:hover { background: rgba(64, 68, 77, .4); }
+.dot.on { background: var(--orange); transform: scale(1.35); }
+
+.counter { margin: 0; color: var(--muted); font-size: 14px; font-variant-numeric: tabular-nums; }
+
+@media (max-width: 640px) {
+  .nav.prev { left: 4px; }
+  .nav.next { right: 4px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav { transition: none; }
+  .dot { transition: none; }
 }
 
 .caveat {
