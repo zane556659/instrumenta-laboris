@@ -1,0 +1,199 @@
+/* 作品集網站｜橘白格線
+   視覺沿用 2026-08-08 PDF 印章案例卡 (theme.css) */
+
+:root {
+  --orange: #E27F2E;
+  --ink: #40444D;
+  --muted: #73777e;
+  --paper: #F6F7F8;
+  --line: rgba(0, 0, 0, .09);
+  --grid: rgba(0, 0, 0, .03);
+  --max: 760px;
+}
+
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 40px 40px;
+  color: var(--ink);
+  font-family: system-ui, -apple-system, "Segoe UI", "Noto Sans TC",
+               "Microsoft JhengHei", sans-serif;
+  font-size: 17px;
+  line-height: 1.85;
+}
+
+.wrap { max-width: var(--max); margin: 0 auto; padding: 0 24px; }
+
+/* ---------- header ---------- */
+
+.site-head {
+  padding: 64px 0 40px;
+  border-bottom: 1px solid var(--line);
+}
+
+.site-name {
+  margin: 0;
+  color: var(--orange);
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: .16em;
+}
+
+.site-lead {
+  margin: 26px 0 0;
+  font-size: 25px;
+  font-weight: 700;
+  line-height: 1.6;
+}
+
+.site-sub {
+  margin: 16px 0 0;
+  color: var(--muted);
+  font-size: 16px;
+}
+
+/* ---------- case list ---------- */
+
+.section-label {
+  margin: 56px 0 20px;
+  color: var(--orange);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: .16em;
+}
+
+.case {
+  display: block;
+  padding: 28px 30px;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--orange);
+  border-radius: 14px;
+  background: #fff;
+  color: inherit;
+  text-decoration: none;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, .04);
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+
+.case:hover,
+.case:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, .08);
+}
+
+.case-no { color: var(--orange); font-size: 13px; font-weight: 800; letter-spacing: .12em; }
+.case-title { margin: 10px 0 0; font-size: 22px; font-weight: 800; line-height: 1.5; }
+.case-desc { margin: 12px 0 0; color: var(--muted); font-size: 16px; }
+.case-more { margin: 18px 0 0; color: var(--orange); font-size: 15px; font-weight: 700; }
+
+.pending {
+  margin: 20px 0 0;
+  padding: 20px 24px;
+  border: 1px dashed var(--line);
+  border-radius: 14px;
+  color: var(--muted);
+  font-size: 15px;
+}
+
+/* ---------- article ---------- */
+
+.back {
+  display: inline-block;
+  margin: 40px 0 0;
+  color: var(--orange);
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.back:hover { text-decoration: underline; }
+
+.art-head { padding: 26px 0 36px; border-bottom: 1px solid var(--line); }
+.art-title { margin: 0; color: var(--orange); font-size: 34px; font-weight: 900; line-height: 1.4; }
+.art-sub { margin: 18px 0 0; font-size: 19px; font-weight: 500; }
+.art-meta { margin: 22px 0 0; color: var(--muted); font-size: 15px; }
+
+h2 {
+  margin: 56px 0 18px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+  font-size: 21px;
+  font-weight: 800;
+  line-height: 1.5;
+}
+
+p { margin: 0 0 18px; }
+
+ul { margin: 0 0 18px; padding-left: 20px; }
+li { margin: 0 0 10px; }
+
+strong { font-weight: 800; }
+
+.flow-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 0 0 22px;
+}
+
+.flow-box {
+  padding: 22px 24px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #fff;
+}
+
+.flow-box.now { border: 2px solid var(--orange); }
+.flow-box h3 { margin: 0 0 14px; color: var(--orange); font-size: 15px; font-weight: 800; letter-spacing: .06em; }
+.flow-box ol { margin: 0; padding-left: 20px; font-size: 16px; }
+.flow-box li { margin: 0 0 8px; }
+
+.cards { margin: 30px 0 0; }
+
+.cards img {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 0 0 20px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+
+.caveat {
+  margin: 30px 0 0;
+  padding: 22px 26px;
+  border-left: 4px solid var(--orange);
+  border-radius: 0 12px 12px 0;
+  background: #fff;
+  color: var(--muted);
+  font-size: 16px;
+}
+
+.caveat p:last-child { margin-bottom: 0; }
+
+/* ---------- footer ---------- */
+
+.site-foot {
+  margin: 80px 0 0;
+  padding: 30px 0 60px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.site-foot a { color: var(--muted); }
+
+@media (max-width: 640px) {
+  body { font-size: 16px; }
+  .site-head { padding: 44px 0 30px; }
+  .site-lead { font-size: 21px; }
+  .art-title { font-size: 27px; }
+  .flow-pair { grid-template-columns: 1fr; }
+}

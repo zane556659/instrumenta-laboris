@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PDF 印章流程簡化工具｜Ziv 工具作品集</title>
+<meta name="description" content="減少新增 PDF 印章時重複處理的工具實驗：需求、流程改變、離線設計與驗收方式。">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="wrap">
+  <a class="back" href="index.html">← 回作品集</a>
+</div>
+
+<header class="wrap art-head">
+  <h1 class="art-title">PDF 印章流程簡化工具</h1>
+  <p class="art-sub">減少新增 PDF 印章時重複處理的工具實驗</p>
+  <p class="art-meta">CASE 01 ｜ 2026 年 7–8 月 ｜ Python、PyMuPDF、tkinter</p>
+</header>
+
+<main class="wrap">
+
+  <h2>一、使用者的需求</h2>
+  <ul>
+    <li>實際使用者希望減少處理 PDF 印章時反覆出現的中間步驟。</li>
+    <li>減少新增印章時的重複性處理。</li>
+    <li>先準備多個印章，再依序蓋到正確位置。</li>
+  </ul>
+
+  <h2>二、流程改變</h2>
+  <div class="flow-pair">
+    <div class="flow-box">
+      <h3>原本流程</h3>
+      <ol>
+        <li>產出印章</li>
+        <li>存進印章</li>
+        <li>蓋上印章</li>
+        <li>整理印章</li>
+      </ol>
+    </div>
+    <div class="flow-box now">
+      <h3>工具流程</h3>
+      <ol>
+        <li>產出印章</li>
+        <li>蓋上印章</li>
+      </ol>
+    </div>
+  </div>
+  <p>中間兩個步驟被拿掉，不是因為它們不重要，而是因為它們只是為了讓前後兩步能接起來而存在。</p>
+
+  <h2>三、離線設計與驗收</h2>
+  <ul>
+    <li>因資料與 AI 使用的資安限制，將工具做成離線版。</li>
+    <li>以手動完成的正確成果，作為工具輸出的對照標準。</li>
+    <li>經過三版修正後，才定下目前的蓋章方式。</li>
+  </ul>
+  <p>第二點是這個案子的驗收基準：不是「看起來對」，是「跟已知正確的那一份對得起來」。</p>
+
+  <h2>四、成果與下一步</h2>
+  <ul>
+    <li>已完成：離線操作 SOP。</li>
+    <li>預計以同一份匿名 PDF、3 個印章為情境，比較原流程與新工具的完成時間。</li>
+  </ul>
+
+  <div class="caveat">
+    <p><strong>此為待驗證的時間假設，不可當成既有的節省時間成果宣稱。</strong></p>
+    <p>時間效益尚未實際量測，所以這一頁不寫任何「省下多少分鐘」。</p>
+  </div>
+
+  <h2>五、案例卡</h2>
+  <div class="cards">
+    <img src="cards/01-cover.png" alt="封面：PDF 印章流程簡化工具" loading="lazy">
+    <img src="cards/02-needs.png" alt="使用者需求" loading="lazy">
+    <img src="cards/03-flow.png" alt="流程改變：四步縮成兩步" loading="lazy">
+    <img src="cards/04-verify.png" alt="解法與驗證" loading="lazy">
+    <img src="cards/05-next.png" alt="成果與下一步" loading="lazy">
+  </div>
+
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <p><a href="index.html">← 回作品集</a></p>
+    <p>Made by Ziv</p>
+  </div>
+</footer>
+
+</body>
+</html>
