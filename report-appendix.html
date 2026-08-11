@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>檢驗報告附件自動彙整工具｜Ziv 工具作品集</title>
+<meta name="description" content="把分散在三份儀器輸出與一份表單裡的資料，合併、標註、蓋章、組成單一附件的工具實驗。">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="wrap">
+  <a class="back" href="index.html">← 回作品集</a>
+</div>
+
+<header class="wrap art-head">
+  <h1 class="art-title">檢驗報告附件自動彙整工具</h1>
+  <p class="art-sub">把一份 20 頁附件的組裝，從逐檔手工改成選一次資料夾</p>
+  <p class="art-meta">CASE 02 ｜ 2026 年 8 月 ｜ Python、PyMuPDF、python-docx、tkinter</p>
+</header>
+
+<main class="wrap">
+
+  <!-- 定位句：本人原話。「一次性」「消滅」兩個詞尚在觀察（見 CASE 02 內容紀錄），
+       若日後換字，這裡與案例卡 01 要一起改，不要只改一邊。 -->
+  <p class="saying-label">我為什麼做它</p>
+  <p class="saying">透過一次性工具把它消滅。</p>
+  <p class="saying">當我被重複性的工作壓垮且耗盡腦力時，我沒辦法把我的腦力用在真正需要思考的地方。</p>
+
+  <h2>一、它解的不是時間，是心力</h2>
+
+  <p class="saying">好不容易終於把事情弄完、回到電腦桌前，我卻面臨另一個狀況：我忘記自己剛才的進度到哪裡了。</p>
+  <p class="saying">我自己的個性很容易害怕結果不好，又會反覆回去核對「這個東西到底有沒有打對或打錯」。</p>
+  <p class="saying">耗費了我很多的心力。</p>
+
+  <p>一份要交出去的附件，內容分散在三份儀器輸出的 PDF 和一份要手填的表單裡：</p>
+  <ul>
+    <li>每一份都要照固定規則處理：挑掉用不到的明細頁、逐頁標上編號、其中一份要整份蓋上副本章。</li>
+    <li>表單裡的數據與日期，原本是看著儀器輸出一格一格手 key 進去。</li>
+    <li>最後要把四個來源接成一份順序固定的附件。</li>
+  </ul>
+
+  <p>這些步驟沒有一個是難的。難的是它們每次都一樣、順序不能錯，而且中間一定會被打斷。</p>
+
+  <h2>二、流程改變</h2>
+
+  <div class="flow-pair">
+    <div class="flow-box">
+      <h3>原本流程</h3>
+      <ol>
+        <li>開三份原始檔，各自刪掉用不到的頁</li>
+        <li>逐頁加上編號</li>
+        <li>其中一份整份蓋副本章</li>
+        <li>開表單，對照著手 key 數據與日期</li>
+        <li>四個來源依固定順序合併</li>
+      </ol>
+    </div>
+    <div class="flow-box now">
+      <h3>工具流程</h3>
+      <ol>
+        <li>選放著原始檔的資料夾</li>
+        <li>按一次</li>
+      </ol>
+    </div>
+  </div>
+
+  <p>中間那些步驟沒有消失，是被搬進工具裡跑。使用者要做的判斷從五個變成一個：<strong>檔案放對地方了沒有。</strong></p>
+
+  <h2>三、怎麼證明它做對了</h2>
+
+  <p class="saying">雖然有時候會懶惰、有時候會不想弄，但我覺得至少要自己先跑過一次這個東西，我才敢給別人用。</p>
+
+  <p>這個案子沒有「看起來對就好」這個選項，因為輸出是要交出去的正式附件。所以驗收全部對照<strong>既有的正確成品</strong>做——不是我覺得它對，是它跟已知正確的那一份對得起來。</p>
+
+  <!-- ul 不能放進 p，用 div 包（放 p 裡瀏覽器會自己把 p 關掉，樣式跟著斷） -->
+  <div class="footnote">
+    <p style="margin:0 0 10px;">量測方式（這些是收據，不是重點）：</p>
+    <ul>
+      <li>逐頁 200 dpi 像素比對</li>
+      <li>表單那幾頁做到零像素差異（150 與 300 dpi 各驗一次）</li>
+      <li>章的落點以點為單位量，與既有版本相差 0.002 pt</li>
+      <li>打包成執行檔後再驗一次，與腳本版本逐頁像素差 0</li>
+      <li>內建自我測試：不開視窗跑完整條流程——因為「視窗打得開」證明不了「流程跑得完」</li>
+    </ul>
+  </div>
+
+  <h2>四、正確的程式，也會輸出錯的檔案</h2>
+
+  <p>這個案子最花時間的部分不在功能，在發現<strong>程式沒錯、但環境會讓它產出壞檔案</strong>。使用者回報過兩次問題，兩次查證後都不是程式的缺陷：</p>
+
+  <ul>
+    <li><strong>「版型跑掉、右上角多了頁次」</strong>——查下去兩件事是同一個成因：寫這支工具的機器，跟實際拿它來用的機器，裝的字型不一樣。缺字型的那一台會自動換一個字型頂替，行距被撐開、頁數變多、頁碼跟著錯。<strong>數據完全正確，錯的是它長出來的樣子。</strong><br>
+    → 真正的代價是「在開發的機器上測出來的頁數不可信」。所以加了守門：選表單時先檢查這台機器有沒有裝它需要的字型，沒有就先講，不要等檔案寄出去才發現。</li>
+    <li><strong>「產出的檔案少了一份東西」</strong>——查下去，最終附件裡那幾頁一直都在，而且缺了程式會直接停住、不會默默少頁。真正缺的是另一個資料夾裡沒有單獨留一份。<br>
+    → 補上單獨複製一份（是複製不是搬移，搬走會讓同一件重跑時找不到來源）。</li>
+  </ul>
+
+  <p>使用者回報的是<strong>症狀</strong>，症狀跟缺陷經常不在同一個地方。<strong>先查證再改</strong>，不然會去修一段本來就是對的程式。</p>
+
+  <p class="saying">不是說不能有問題，而是我不想要犯那種很明確的錯誤，還讓人家知道。</p>
+
+  <h2>五、成果與邊界</h2>
+
+  <p>已完成：視窗版工具與可直接執行的版本（換機器只需要指一次表單資料夾）、兩個環境守門、一份使用說明。</p>
+
+  <p>一位實際使用者回報：原本約 15 分鐘的動作，使用後約剩 1 分鐘。</p>
+  <p><span class="figure">約 15 分鐘 → 約 1 分鐘</span></p>
+
+  <div class="caveat">
+    <p><strong>這是單次口頭估計，不是碼表量測。</strong></p>
+    <p>使用時間約一週，目前累計一件。樣本不足以宣稱常態成果，因此本頁不寫任何累計節省數字。下一步是累積更多件數，並在完整的真實情境下再驗一次。</p>
+  </div>
+
+  <h2>六、案例卡</h2>
+
+  <div class="carousel" id="cardDeck">
+    <div class="carousel-frame">
+      <button class="nav prev" type="button" aria-label="上一張">‹</button>
+
+      <div class="track" tabindex="0" role="group" aria-roledescription="輪播" aria-label="案例卡">
+        <!-- 輪播不用 lazy：翻到下一張才開始抓圖，會先閃一格空白 -->
+        <figure class="slide"><img src="cards/case02/01-cover.png" alt="封面：檢驗報告附件自動彙整工具" decoding="async"></figure>
+        <figure class="slide"><img src="cards/case02/02-why.png" alt="它解的不是時間，是心力" decoding="async"></figure>
+        <figure class="slide"><img src="cards/case02/03-flow.png" alt="流程改變：判斷從五個變成一個" decoding="async"></figure>
+        <figure class="slide"><img src="cards/case02/04-verify.png" alt="怎麼證明它做對了" decoding="async"></figure>
+        <figure class="slide"><img src="cards/case02/05-guard.png" alt="正確的程式，也會輸出錯的檔案" decoding="async"></figure>
+        <figure class="slide"><img src="cards/case02/06-result.png" alt="成果與邊界" decoding="async"></figure>
+      </div>
+
+      <button class="nav next" type="button" aria-label="下一張">›</button>
+    </div>
+
+    <div class="carousel-foot">
+      <div class="dots" role="tablist" aria-label="選擇案例卡"></div>
+      <p class="counter" aria-live="polite"><span class="cur">1</span> / <span class="total">6</span></p>
+    </div>
+  </div>
+
+</main>
+
+<script>
+(function () {
+  var deck = document.getElementById('cardDeck');
+  if (!deck) return;
+
+  var track  = deck.querySelector('.track');
+  var slides = Array.prototype.slice.call(deck.querySelectorAll('.slide'));
+  var prev   = deck.querySelector('.prev');
+  var next   = deck.querySelector('.next');
+  var dotBox = deck.querySelector('.dots');
+  var curEl  = deck.querySelector('.cur');
+  var index  = 0;
+
+  deck.querySelector('.total').textContent = slides.length;
+
+  // 沒有 JS 時是一排可捲動的卡，有 JS 才長出控制項
+  deck.classList.add('is-live');
+
+  var dots = slides.map(function (_, i) {
+    var d = document.createElement('button');
+    d.type = 'button';
+    d.className = 'dot';
+    d.setAttribute('role', 'tab');
+    d.setAttribute('aria-label', '第 ' + (i + 1) + ' 張');
+    d.addEventListener('click', function () { go(i); });
+    dotBox.appendChild(d);
+    return d;
+  });
+
+  // 不用 scrollTo({behavior:'smooth'})，也不用 CSS scroll-behavior——
+  // 兩者在部分環境會靜默不執行，結果是圓點換了、圖片沒動。
+  // 這裡每一格自己寫入 scrollLeft，動不動得了不看瀏覽器臉色。
+  var slide = null;
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function glide(to) {
+    if (slide) cancelAnimationFrame(slide);
+    var from = track.scrollLeft;
+    var dist = to - from;
+
+    // 動畫跑不動的情況一律直接就位：分頁在背景時 rAF 不發生，
+    // 若還等它跑完，圓點會換而圖片不動——寧可少一段滑順也不能不動
+    var cannotAnimate = reduce || document.hidden || !window.requestAnimationFrame;
+    if (cannotAnimate || Math.abs(dist) < 2) { track.scrollLeft = to; return; }
+
+    var t0 = performance.now();
+    var dur = 320;
+    (function step(now) {
+      var p = Math.min(1, (now - t0) / dur);
+      var e = p < .5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2; // easeInOutCubic
+      track.scrollLeft = from + dist * e;
+      if (p < 1) { slide = requestAnimationFrame(step); }
+      else { track.scrollLeft = to; }   // 收尾一定落在整數位置
+    })(t0);
+  }
+
+  function go(i) {
+    index = Math.max(0, Math.min(slides.length - 1, i));
+    glide(slides[index].offsetLeft - track.offsetLeft);
+    paint();
+  }
+
+  function paint() {
+    dots.forEach(function (d, i) {
+      d.classList.toggle('on', i === index);
+      d.setAttribute('aria-selected', i === index);
+    });
+    curEl.textContent = index + 1;
+    prev.disabled = index === 0;
+    next.disabled = index === slides.length - 1;
+  }
+
+  prev.addEventListener('click', function () { go(index - 1); });
+  next.addEventListener('click', function () { go(index + 1); });
+
+  track.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowLeft')  { e.preventDefault(); go(index - 1); }
+    if (e.key === 'ArrowRight') { e.preventDefault(); go(index + 1); }
+  });
+
+  // 手指滑動／觸控板由瀏覽器原生 scroll-snap 處理，這裡只負責把位置讀回來
+  var idle;
+  track.addEventListener('scroll', function () {
+    clearTimeout(idle);
+    idle = setTimeout(function () {
+      var mid = track.scrollLeft + track.clientWidth / 2;
+      var near = 0, best = Infinity;
+      slides.forEach(function (s, i) {
+        var c = s.offsetLeft - track.offsetLeft + s.clientWidth / 2;
+        if (Math.abs(c - mid) < best) { best = Math.abs(c - mid); near = i; }
+      });
+      if (near !== index) { index = near; paint(); }
+    }, 90);
+  }, { passive: true });
+
+  paint();
+})();
+</script>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <p><a href="index.html">← 回作品集</a></p>
+    <p>Made by Ziv</p>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -259,6 +259,62 @@ strong { font-weight: 800; }
   .dot { transition: none; }
 }
 
+/* ---------- 本人原話 ----------
+   排版順序刻意是「先放他的話，其他繞著它排」。
+   2026-08-11 的教訓：先排 AI 寫的草稿、再把他的話補進空位，
+   他的話就永遠變成配角（案例卡 01/04 都踩過）。所以這一塊字級要大於正文。 */
+
+.saying {
+  margin: 26px 0;
+  padding: 4px 0 4px 24px;
+  border-left: 4px solid var(--orange);
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.75;
+}
+
+.saying + .saying { margin-top: 20px; }
+
+.saying-label {
+  margin: 30px 0 0;
+  color: var(--orange);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: .14em;
+}
+
+/* 量測數字降級用：是收據，不是主角 */
+.footnote {
+  margin: 18px 0 0;
+  padding: 16px 20px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #fff;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.9;
+}
+
+.footnote ul { margin: 0; padding-left: 18px; }
+.footnote li { margin: 0 0 6px; }
+.footnote li:last-child { margin-bottom: 0; }
+
+/* 單次數字，刻意不做成大字報 */
+.figure {
+  display: inline-block;
+  margin: 4px 0 0;
+  padding: 8px 16px;
+  border: 1px solid var(--orange);
+  border-radius: 999px;
+  color: var(--orange);
+  font-size: 16px;
+  font-weight: 800;
+}
+
+@media (max-width: 640px) {
+  .saying { font-size: 18px; padding-left: 18px; }
+}
+
 .caveat {
   margin: 30px 0 0;
   padding: 22px 26px;
